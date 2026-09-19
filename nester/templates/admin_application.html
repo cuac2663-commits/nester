@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}{{ app.full_name }} — Admin{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-10">
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <div>
+      <a href="/admin/applications" class="text-sm text-zinc-400 hover:text-purple-300">← Applications</a>
+      <h1 class="text-2xl font-bold mt-1">{{ app.full_name }}</h1>
+    </div>
+    <div class="text-right">
+      <div class="text-3xl font-bold {% if app.match_score >= 80 %}text-green-400{% elif app.match_score >= 60 %}text-yellow-400{% else %}text-zinc-300{% endif %}">
+        {{ app.match_score }}% match
+      </div>
+    </div>
+  </div>
+
+  {% if reasons.positives or reasons.diffs %}
+  <div class="grid sm:grid-cols-2 gap-4 mb-8">
+    <div class="card p-4">
+      <h3 class="text-sm font-medium text-green-400 mb-2">✓ Matches</h3>
+      <ul class="text-sm space-y-1">
+        {% for p in reasons.positives %}<li>{{ p }}</li>{% endfor %}
+      </ul>
+    </div>
+    <div class="card p-4">
+      <h3 class="text-sm font-medium text-amber-400 mb-2">Possible differences</h3>
+      <ul class="text-sm space-y-1 text-zinc-400">
+        {% for d in reasons.diffs %}<li>{{ d }}</li>{% else %}<li>—</li>{% endfor %}
+      </ul>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="card p-6 mb-6 space-y-4">
+    <div class="grid sm:grid-cols-2 gap-4 text-sm">
+      <div><span class="text-zinc-500">Email</span><br>{{ app.email }}</div>
+      <div><span class="text-zinc-500">Phone</span><br>{{ app.phone or '—' }}</div>
+      <div><span class="text-zinc-500">Age</span><br>{{ app.age or '—' }}</div>
+      <div><span class="text-zinc-500">Nationality</span><br>{{ app.nationality or '—' }}</div>
+      <div><span class="text-zinc-500">Current country</span><br>{{ app.current_country or '—' }}</div>
+      <div><span class="text-zinc-500">City / area</span><br>{{ app.city_area or '—' }}</div>
+      <div><span class="text-zinc-500">Languages</span><br>{{ app.languages or '—' }}</div>
+      <div><span class="text-zinc-500">Work / study</span><br>{{ app.work_study or '—' }}</div>
+      <div><span class="text-zinc-500">Budget</span><br>€{{ app.monthly_budget or '—' }}</div>
+      <div><span class="text-zinc-500">Move-in</span><br>{{ app.move_in_date or '—' }}</div>
+      <div><span class="text-zinc-500">Stay length</span><br>{{ app.stay_length or '—' }}</div>
+      <div><span class="text-zinc-500">Status</span><br><span class="px-2 py-0.5 rounded bg-zinc-800 text-xs">{{ app.status }}</span></div>
+    </div>
+    <hr class="border-[#1e1e2e]">
+    <div class="grid sm:grid-cols-2 gap-4 text-sm">
+      <div><span class="text-zinc-500">Sleep</span><br>{{ app.sleep_schedule or '—' }}</div>
+      <div><span class="text-zinc-500">Cleanliness</span><br>{{ app.cleanliness or '—' }}</div>
+      <div><span class="text-zinc-500">Smoking</span><br>{{ app.smoking or '—' }}</div>
+      <div><span class="text-zinc-500">Pets</span><br>{{ app.pets or '—' }}</div>
+      <div><span class="text-zinc-500">Alcohol</span><br>{{ app.alcohol or '—' }}</div>
+      <div><span class="text-zinc-500">Social</span><br>{{ app.social_style or '—' }}</div>
+      <div><span class="text-zinc-500">Guests</span><br>{{ app.guests or '—' }}</div>
+      <div><span class="text-zinc-500">Cooking</span><br>{{ app.cooking or '—' }}</div>
+    </div>
+    {% if app.roommate_expectations %}
+    <div><span class="text-zinc-500 text-sm">Roommate expectations</span><p class="mt-1">{{ app.roommate_expectations }}</p></div>
+    {% endif %}
+    {% if app.deal_breakers %}
+    <div><span class="text-zinc-500 text-sm">Deal-breakers</span><p class="mt-1">{{ app.deal_breakers }}</p></div>
+    {% endif %}
+    {% if app.about_you %}
+    <div><span class="text-zinc-500 text-sm">About</span><p class="mt-1 whitespace-pre-wrap">{{ app.about_you }}</p></div>
+    {% endif %}
+  </div>
+
+  <!-- Status + Notes -->
+  <div class="grid md:grid-cols-2 gap-6">
+    <div class="card p-5">
+      <h3 class="font-semibold mb-3">Change status</h3>
+      <form method="POST" class="flex gap-2">
+        <input type="hidden" name="action" value="status">
+        <select name="status" class="flex-1 bg-[#0a0a0f] border border-[#1e1e2e] rounded-lg px-3 py-2 text-sm">
+          {% for s in ['new','reviewing','shortlisted','matched','rejected'] %}
+          <option value="{{ s }}" {% if app.status==s %}selected{% endif %}>{{ s|capitalize }}</option>
+          {% endfor %}
+        </select>
+        <button type="submit" class="px-4 py-2 rounded-lg bg-purple-600 text-white text-sm">Update</button>
+      </form>
+    </div>
+    <div class="card p-5">
+      <h3 class="font-semibold mb-3">Add note</h3>
+      <form method="POST">
+        <input type="hidden" name="action" value="note">
+        <textarea name="note" rows="2" required class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-lg px-3 py-2 text-sm mb-2"></textarea>
+        <button type="submit" class="px-4 py-2 rounded-lg bg-zinc-700 text-white text-sm">Save note</button>
+      </form>
+    </div>
+  </div>
+
+  {% if notes %}
+  <div class="card p-5 mt-6">
+    <h3 class="font-semibold mb-3">Internal notes</h3>
+    <ul class="space-y-3 text-sm">
+      {% for n in notes %}
+      <li class="border-b border-[#1e1e2e] pb-2">
+        <span class="text-zinc-500 text-xs">{{ n.created_at[:16] }}</span>
+        <p class="mt-1">{{ n.note }}</p>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <form method="POST" class="mt-8" onsubmit="return confirm('Delete this application permanently?')">
+    <input type="hidden" name="action" value="delete">
+    <button type="submit" class="text-red-400 text-sm hover:underline">Delete application</button>
+  </form>
+</div>
+{% endblock %}

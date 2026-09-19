@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — Admin{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10">
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-8">
+    <h1 class="text-2xl font-bold">Admin Dashboard</h1>
+    <div class="flex gap-3 text-sm">
+      <a href="/admin/applications" class="px-4 py-2 rounded-lg border border-zinc-700 hover:border-purple-500">All applications</a>
+      <a href="/admin/export" class="px-4 py-2 rounded-lg border border-zinc-700 hover:border-purple-500">Export CSV</a>
+      <a href="/admin/property" class="px-4 py-2 rounded-lg border border-zinc-700 hover:border-purple-500">Property</a>
+      <a href="/admin/activity" class="px-4 py-2 rounded-lg border border-zinc-700 hover:border-purple-500">Activity</a>
+      <a href="/admin/logout" class="px-4 py-2 rounded-lg text-red-400 border border-red-900/50">Logout</a>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
+    <div class="card p-4 text-center">
+      <div class="text-2xl font-bold">{{ total }}</div>
+      <div class="text-xs text-zinc-500 mt-1">Total</div>
+    </div>
+    <div class="card p-4 text-center border-purple-500/30">
+      <div class="text-2xl font-bold text-purple-300">{{ counts.new }}</div>
+      <div class="text-xs text-zinc-500 mt-1">New</div>
+    </div>
+    <div class="card p-4 text-center">
+      <div class="text-2xl font-bold">{{ counts.reviewing }}</div>
+      <div class="text-xs text-zinc-500 mt-1">Reviewing</div>
+    </div>
+    <div class="card p-4 text-center">
+      <div class="text-2xl font-bold text-green-400">{{ counts.shortlisted }}</div>
+      <div class="text-xs text-zinc-500 mt-1">Shortlisted</div>
+    </div>
+    <div class="card p-4 text-center">
+      <div class="text-2xl font-bold text-emerald-400">{{ counts.matched }}</div>
+      <div class="text-xs text-zinc-500 mt-1">Matched</div>
+    </div>
+    <div class="card p-4 text-center">
+      <div class="text-2xl font-bold text-red-400">{{ counts.rejected }}</div>
+      <div class="text-xs text-zinc-500 mt-1">Rejected</div>
+    </div>
+  </div>
+
+  <h2 class="font-semibold mb-4">Recent applications</h2>
+  <div class="card overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-[#0a0a0f] text-zinc-500 text-left">
+        <tr>
+          <th class="px-4 py-3">Name</th>
+          <th class="px-4 py-3 hidden sm:table-cell">Email</th>
+          <th class="px-4 py-3">Score</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in recent %}
+        <tr class="border-t border-[#1e1e2e] hover:bg-white/5">
+          <td class="px-4 py-3"><a href="/admin/application/{{ a.id }}" class="text-purple-300 hover:underline">{{ a.full_name }}</a></td>
+          <td class="px-4 py-3 hidden sm:table-cell text-zinc-400">{{ a.email }}</td>
+          <td class="px-4 py-3">{{ a.match_score }}%</td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-xs bg-zinc-800">{{ a.status }}</span></td>
+          <td class="px-4 py-3 text-zinc-500">{{ a.created_at[:10] }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="5" class="px-4 py-8 text-center text-zinc-500">No applications yet</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

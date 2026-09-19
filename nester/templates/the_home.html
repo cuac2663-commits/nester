@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block title %}The home — Nester{% endblock %}
+{% block content %}
+<section class="max-w-5xl mx-auto px-4 py-16">
+  <p class="text-purple-400 text-sm font-medium tracking-wider uppercase mb-3">About this home</p>
+  <h1 class="text-3xl sm:text-4xl font-bold mb-6">A shared house that feels like a home</h1>
+  <p class="text-zinc-400 text-lg leading-relaxed max-w-2xl mb-12">
+    A bright, modern two-bedroom home in a quiet residential pocket of Cork. Both rooms are available from 29 November for two new housemates who value a calm, clean and friendly shared home.
+  </p>
+
+  <div class="grid md:grid-cols-2 gap-6 mb-12">
+    <div class="card p-6">
+      <h2 class="font-semibold text-lg mb-5">Key details</h2>
+      <div class="grid grid-cols-2 gap-4">
+        <div class="bg-[#0a0a0f] rounded-xl p-4 border border-[#1e1e2e]">
+          <div class="text-purple-400 text-xs uppercase tracking-wide mb-1">Rooms</div>
+          <div class="font-semibold">2 rooms</div>
+        </div>
+        <div class="bg-[#0a0a0f] rounded-xl p-4 border border-[#1e1e2e]">
+          <div class="text-purple-400 text-xs uppercase tracking-wide mb-1">People</div>
+          <div class="font-semibold">2 people</div>
+        </div>
+        <div class="bg-[#0a0a0f] rounded-xl p-4 border border-[#1e1e2e]">
+          <div class="text-purple-400 text-xs uppercase tracking-wide mb-1">Price</div>
+          <div class="font-semibold">€1,000 per room</div>
+        </div>
+        <div class="bg-[#0a0a0f] rounded-xl p-4 border border-[#1e1e2e]">
+          <div class="text-purple-400 text-xs uppercase tracking-wide mb-1">Available</div>
+          <div class="font-semibold">From 29 November</div>
+        </div>
+      </div>
+    </div>
+    <div class="card p-6">
+      <h2 class="font-semibold text-lg mb-5">Why you'll love it</h2>
+      <ul class="space-y-3 text-sm">
+        <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Two spacious double rooms</li>
+        <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Available from 29 November</li>
+        <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> €1,000 per room per month</li>
+        <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Quiet residential street</li>
+        <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Bright shared living space</li>
+        <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Fully equipped kitchen</li>
+        <li class="flex items-start gap-2"><span class="text-green-400 mt-0.5">✓</span> Private garden area</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="card p-6 mb-10">
+    <h2 class="font-semibold text-lg mb-3">Address</h2>
+    <p class="text-zinc-300">{{ prop.address if prop else '15 Pinewood Grove, Commons Road, Cork, T23 V6W7, Ireland' }}</p>
+  </div>
+
+  <div class="text-center">
+    <a href="/apply" class="btn-primary text-white font-semibold px-8 py-3.5 rounded-full inline-block">
+      Apply for a room →
+    </a>
+  </div>
+</section>
+{% endblock %}

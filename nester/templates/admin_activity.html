@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Activity — Admin{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto px-4 py-10">
+  <div class="flex items-center justify-between mb-6">
+    <h1 class="text-2xl font-bold">Activity Log</h1>
+    <a href="/admin/dashboard" class="text-sm text-zinc-400 hover:text-purple-300">← Dashboard</a>
+  </div>
+  <div class="card overflow-hidden">
+    <table class="w-full text-sm">
+      <thead class="bg-[#0a0a0f] text-zinc-500 text-left">
+        <tr>
+          <th class="px-4 py-3">Time</th>
+          <th class="px-4 py-3">Action</th>
+          <th class="px-4 py-3">Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for l in logs %}
+        <tr class="border-t border-[#1e1e2e]">
+          <td class="px-4 py-3 text-zinc-500 whitespace-nowrap">{{ l.created_at[:19] }}</td>
+          <td class="px-4 py-3">{{ l.action }}</td>
+          <td class="px-4 py-3 text-zinc-400">{{ l.details or '' }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="3" class="px-4 py-8 text-center text-zinc-500">No activity yet</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

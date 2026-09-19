@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Nester — Find your place. Find your people.{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            nester: {
+              purple: '#a855f7',
+              dark: '#0a0a0f',
+              card: '#12121a',
+              border: '#1e1e2e',
+              muted: '#a1a1aa'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { background: #0a0a0f; color: #f4f4f5; }
+    .gradient-text {
+      background: linear-gradient(135deg, #e9d5ff 0%, #c084fc 50%, #a855f7 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      transition: all 0.2s;
+    }
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 0 24px rgba(168, 85, 247, 0.45);
+    }
+    .card {
+      background: #12121a;
+      border: 1px solid #1e1e2e;
+      border-radius: 1rem;
+    }
+    .glow {
+      box-shadow: 0 0 40px rgba(168, 85, 247, 0.15);
+    }
+    .nav-link.active {
+      color: #c084fc;
+      border-bottom: 2px solid #a855f7;
+    }
+  </style>
+  {% block head %}{% endblock %}
+</head>
+<body class="font-sans antialiased min-h-screen flex flex-col">
+  <!-- Nav -->
+  <header class="sticky top-0 z-50 bg-[#0a0a0f]/90 backdrop-blur-md border-b border-[#1e1e2e]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-2 font-bold text-xl tracking-tight">
+        <span class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-violet-700 flex items-center justify-center text-white text-sm">⌂</span>
+        <span>Nester</span>
+      </a>
+      <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-zinc-400">
+        <a href="/" class="hover:text-white transition {% if active=='home' %}active text-purple-300{% endif %}">Home</a>
+        <a href="/the-home" class="hover:text-white transition {% if active=='the-home' %}active text-purple-300{% endif %}">The home</a>
+        <a href="/gallery" class="hover:text-white transition {% if active=='gallery' %}active text-purple-300{% endif %}">Gallery</a>
+        <a href="/apply" class="hover:text-white transition {% if active=='apply' %}active text-purple-300{% endif %}">Apply</a>
+      </nav>
+      <a href="/admin" class="text-sm px-4 py-2 rounded-full border border-zinc-700 hover:border-purple-500 hover:text-purple-300 transition">
+        ⚙ Admin
+      </a>
+    </div>
+  </header>
+
+  <main class="flex-1">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        <div class="max-w-6xl mx-auto px-4 pt-4">
+          {% for category, message in messages %}
+            <div class="mb-2 px-4 py-3 rounded-lg text-sm {% if category=='error' %}bg-red-900/40 text-red-200{% else %}bg-purple-900/40 text-purple-200{% endif %}">
+              {{ message }}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="border-t border-[#1e1e2e] py-8 mt-16">
+    <div class="max-w-6xl mx-auto px-4 text-center text-zinc-500 text-sm">
+      <p>Nester · 15 Pinewood Grove, Cork · Real applications, real people.</p>
+      <p class="mt-2 text-xs">© 2025 Nester. Built for honest housemate matching.</p>
+    </div>
+  </footer>
+</body>
+</html>

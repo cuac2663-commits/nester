@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block title %}Application received — Nester{% endblock %}
+{% block content %}
+<section class="max-w-xl mx-auto px-4 py-24 text-center">
+  <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-purple-500/20 flex items-center justify-center text-3xl">✓</div>
+  <h1 class="text-3xl font-bold mb-4">Thank you, {{ name }}!</h1>
+  <p class="text-zinc-400 text-lg mb-8 leading-relaxed">
+    Your application has been received. We read every one personally and will get back to you if there's a good fit.
+  </p>
+  <a href="/" class="text-purple-400 hover:underline">← Back to home</a>
+</section>
+{% endblock %}

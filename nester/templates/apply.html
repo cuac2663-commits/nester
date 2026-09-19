@@ -1,0 +1,190 @@
+{% extends "base.html" %}
+{% block title %}Apply — Nester{% endblock %}
+{% block content %}
+<section class="max-w-3xl mx-auto px-4 py-16">
+  <div class="text-center mb-12">
+    <h1 class="text-3xl sm:text-4xl font-bold mb-4">Less swiping. Better matches.</h1>
+    <p class="text-zinc-400">Tell us a little about how you like to live. We read every application ourselves and reply to the people who fit the house.</p>
+  </div>
+
+  {% if errors %}
+  <div class="mb-6 p-4 rounded-xl bg-red-900/30 border border-red-800 text-red-200 text-sm">
+    <ul class="list-disc list-inside">
+      {% for e in errors %}<li>{{ e }}</li>{% endfor %}
+    </ul>
+  </div>
+  {% endif %}
+
+  <form method="POST" class="space-y-8" id="applyForm">
+    <!-- Personal -->
+    <div class="card p-6 space-y-5">
+      <h2 class="font-semibold text-lg text-purple-300">About you</h2>
+      <div>
+        <label class="block text-sm text-zinc-400 mb-1.5">Full name *</label>
+        <input type="text" name="full_name" required value="{{ form.full_name or '' }}"
+          class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Email *</label>
+          <input type="email" name="email" required value="{{ form.email or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Phone</label>
+          <input type="tel" name="phone" value="{{ form.phone or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Age</label>
+          <input type="number" name="age" min="18" max="99" value="{{ form.age or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Nationality</label>
+          <select name="nationality" class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+            <option value="">Select country</option>
+            {% for c in countries %}
+            <option value="{{ c }}" {% if form.nationality==c %}selected{% endif %}>{{ c }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Current country</label>
+          <input type="text" name="current_country" value="{{ form.current_country or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">City / area</label>
+          <input type="text" name="city_area" value="{{ form.city_area or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+      </div>
+      <div>
+        <label class="block text-sm text-zinc-400 mb-1.5">Languages</label>
+        <input type="text" name="languages" placeholder="e.g. English, Spanish" value="{{ form.languages or '' }}"
+          class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+      </div>
+      <div>
+        <label class="block text-sm text-zinc-400 mb-1.5">Work / study</label>
+        <input type="text" name="work_study" placeholder="e.g. Software engineer, UCC student" value="{{ form.work_study or '' }}"
+          class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+      </div>
+    </div>
+
+    <!-- Housing prefs -->
+    <div class="card p-6 space-y-5">
+      <h2 class="font-semibold text-lg text-purple-300">Housing preferences</h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Monthly budget (€)</label>
+          <input type="number" name="monthly_budget" min="0" value="{{ form.monthly_budget or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Preferred move-in date</label>
+          <input type="text" name="move_in_date" placeholder="e.g. 29 November or ASAP" value="{{ form.move_in_date or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Stay length</label>
+          <input type="text" name="stay_length" placeholder="e.g. 6–12 months" value="{{ form.stay_length or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Preferred home type</label>
+          <input type="text" name="preferred_home_type" placeholder="Shared house / quiet / etc." value="{{ form.preferred_home_type or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+      </div>
+    </div>
+
+    <!-- Lifestyle -->
+    <div class="card p-6 space-y-5">
+      <h2 class="font-semibold text-lg text-purple-300">Lifestyle</h2>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Sleep schedule</label>
+          <input type="text" name="sleep_schedule" placeholder="Early bird / night owl / regular" value="{{ form.sleep_schedule or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Cleanliness</label>
+          <input type="text" name="cleanliness" placeholder="Very tidy / average / relaxed" value="{{ form.cleanliness or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Smoking</label>
+          <input type="text" name="smoking" placeholder="No / outside only / yes" value="{{ form.smoking or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Pets</label>
+          <input type="text" name="pets" placeholder="No / yes (describe)" value="{{ form.pets or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Alcohol</label>
+          <input type="text" name="alcohol" placeholder="Rarely / social / never" value="{{ form.alcohol or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Social style</label>
+          <input type="text" name="social_style" placeholder="Quiet / balanced / very social" value="{{ form.social_style or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+      </div>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Guests</label>
+          <input type="text" name="guests" placeholder="Rarely / occasional / frequent" value="{{ form.guests or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+        <div>
+          <label class="block text-sm text-zinc-400 mb-1.5">Cooking</label>
+          <input type="text" name="cooking" placeholder="Love cooking / rarely / etc." value="{{ form.cooking or '' }}"
+            class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">
+        </div>
+      </div>
+    </div>
+
+    <!-- More -->
+    <div class="card p-6 space-y-5">
+      <h2 class="font-semibold text-lg text-purple-300">Expectations</h2>
+      <div>
+        <label class="block text-sm text-zinc-400 mb-1.5">Roommate expectations</label>
+        <textarea name="roommate_expectations" rows="3" class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">{{ form.roommate_expectations or '' }}</textarea>
+      </div>
+      <div>
+        <label class="block text-sm text-zinc-400 mb-1.5">Deal-breakers</label>
+        <textarea name="deal_breakers" rows="2" class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">{{ form.deal_breakers or '' }}</textarea>
+      </div>
+      <div>
+        <label class="block text-sm text-zinc-400 mb-1.5">About you (free text)</label>
+        <textarea name="about_you" rows="4" placeholder="Anything else you'd like us to know..." class="w-full bg-[#0a0a0f] border border-[#1e1e2e] rounded-xl px-4 py-3 focus:outline-none focus:border-purple-500 transition">{{ form.about_you or '' }}</textarea>
+      </div>
+    </div>
+
+    <button type="submit" id="submitBtn" class="btn-primary w-full text-white font-semibold py-4 rounded-full text-lg">
+      Submit application →
+    </button>
+  </form>
+</section>
+<script>
+  document.getElementById('applyForm').addEventListener('submit', function() {
+    const btn = document.getElementById('submitBtn');
+    btn.disabled = true;
+    btn.textContent = 'Sending...';
+  });
+</script>
+{% endblock %}

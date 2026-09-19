@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Applications — Admin{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto px-4 py-10">
+  <div class="flex flex-wrap items-center justify-between gap-4 mb-6">
+    <h1 class="text-2xl font-bold">Applications</h1>
+    <a href="/admin/dashboard" class="text-sm text-zinc-400 hover:text-purple-300">← Dashboard</a>
+  </div>
+
+  <form class="flex flex-wrap gap-3 mb-6" method="GET">
+    <input type="text" name="q" value="{{ q }}" placeholder="Search name, email..."
+      class="bg-[#12121a] border border-[#1e1e2e] rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-purple-500">
+    <select name="status" class="bg-[#12121a] border border-[#1e1e2e] rounded-lg px-3 py-2 text-sm">
+      <option value="">All statuses</option>
+      {% for s in ['new','reviewing','shortlisted','matched','rejected'] %}
+      <option value="{{ s }}" {% if status==s %}selected{% endif %}>{{ s|capitalize }}</option>
+      {% endfor %}
+    </select>
+    <select name="sort" class="bg-[#12121a] border border-[#1e1e2e] rounded-lg px-3 py-2 text-sm">
+      <option value="newest" {% if sort=='newest' %}selected{% endif %}>Newest</option>
+      <option value="oldest" {% if sort=='oldest' %}selected{% endif %}>Oldest</option>
+      <option value="score" {% if sort=='score' %}selected{% endif %}>Best match</option>
+      <option value="name" {% if sort=='name' %}selected{% endif %}>Name</option>
+    </select>
+    <button type="submit" class="px-4 py-2 rounded-lg bg-purple-600 text-white text-sm">Filter</button>
+  </form>
+
+  <div class="card overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead class="bg-[#0a0a0f] text-zinc-500 text-left">
+        <tr>
+          <th class="px-4 py-3">Name</th>
+          <th class="px-4 py-3">Email</th>
+          <th class="px-4 py-3">Budget</th>
+          <th class="px-4 py-3">Match</th>
+          <th class="px-4 py-3">Status</th>
+          <th class="px-4 py-3">Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for a in apps %}
+        <tr class="border-t border-[#1e1e2e] hover:bg-white/5">
+          <td class="px-4 py-3"><a href="/admin/application/{{ a.id }}" class="text-purple-300 hover:underline font-medium">{{ a.full_name }}</a></td>
+          <td class="px-4 py-3 text-zinc-400">{{ a.email }}</td>
+          <td class="px-4 py-3">€{{ a.monthly_budget or '—' }}</td>
+          <td class="px-4 py-3">
+            <span class="{% if a.match_score >= 80 %}text-green-400{% elif a.match_score >= 60 %}text-yellow-400{% else %}text-zinc-400{% endif %}">
+              {{ a.match_score }}%
+            </span>
+          </td>
+          <td class="px-4 py-3"><span class="px-2 py-0.5 rounded text-xs bg-zinc-800">{{ a.status }}</span></td>
+          <td class="px-4 py-3 text-zinc-500">{{ a.created_at[:10] }}</td>
+        </tr>
+        {% else %}
+        <tr><td colspan="6" class="px-4 py-12 text-center text-zinc-500">No applications found</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

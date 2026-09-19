@@ -1,0 +1,55 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="relative min-h-[85vh] flex items-center justify-center overflow-hidden">
+  <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_rgba(168,85,247,0.12)_0%,_transparent_70%)]"></div>
+  <div class="relative max-w-4xl mx-auto px-4 text-center pt-12 pb-20">
+    <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs font-medium mb-8 tracking-wide">
+      ✦ ONE HOME, THOUGHTFULLY SHARED
+    </div>
+    <h1 class="text-4xl sm:text-5xl md:text-6xl font-extrabold leading-tight tracking-tight mb-6">
+      Find your place.<br>
+      <span class="gradient-text">Find your people.</span>
+    </h1>
+    <p class="text-zinc-400 text-lg max-w-xl mx-auto mb-10 leading-relaxed">
+      A calm, well-kept shared house in Cork — real photos, honest details, and a straightforward application that a real person actually reads.
+    </p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/the-home" class="btn-primary text-white font-semibold px-8 py-3.5 rounded-full text-base">
+        View the home →
+      </a>
+      <a href="/apply" class="px-8 py-3.5 rounded-full border border-zinc-600 hover:border-purple-500 text-zinc-200 font-medium transition">
+        Apply for a room
+      </a>
+    </div>
+    <div class="mt-16 flex flex-wrap justify-center gap-6 text-sm text-zinc-500">
+      <span class="flex items-center gap-2">📍 {{ prop.address.split(',')[0] if prop else '15 Pinewood Grove' }}</span>
+      <span class="flex items-center gap-2">📅 Available from 29 November</span>
+      <span class="flex items-center gap-2">🏠 2 rooms · €1,000 / room</span>
+    </div>
+  </div>
+</section>
+
+<!-- Quick cards -->
+<section class="max-w-6xl mx-auto px-4 pb-20">
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="card p-6 glow">
+      <div class="text-purple-400 text-2xl mb-3">🏠</div>
+      <h3 class="font-semibold text-lg mb-2">The home</h3>
+      <p class="text-zinc-400 text-sm">Bright modern two-bedroom house in a quiet residential pocket of Cork.</p>
+      <a href="/the-home" class="inline-block mt-4 text-purple-400 text-sm hover:underline">Explore details →</a>
+    </div>
+    <div class="card p-6 glow">
+      <div class="text-purple-400 text-2xl mb-3">📸</div>
+      <h3 class="font-semibold text-lg mb-2">Real photos</h3>
+      <p class="text-zinc-400 text-sm">Honest gallery of every room, the kitchen, living space and garden.</p>
+      <a href="/gallery" class="inline-block mt-4 text-purple-400 text-sm hover:underline">View gallery →</a>
+    </div>
+    <div class="card p-6 glow">
+      <div class="text-purple-400 text-2xl mb-3">✍️</div>
+      <h3 class="font-semibold text-lg mb-2">Apply once</h3>
+      <p class="text-zinc-400 text-sm">Tell us how you like to live. We read every application ourselves.</p>
+      <a href="/apply" class="inline-block mt-4 text-purple-400 text-sm hover:underline">Start application →</a>
+    </div>
+  </div>
+</section>
+{% endblock %}
